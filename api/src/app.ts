@@ -99,10 +99,10 @@ export default async function createApp() {
 		html = html.replace(/href="\//g, `href="${publicUrl}`);
 		html = html.replace(/src="\//g, `src="${publicUrl}`);
 
-		app.get('/', (req, res) => res.redirect(`./admin/`));
-		app.get('/admin', (req, res) => res.send(html));
-		app.use('/admin', express.static(path.join(adminPath, '..')));
-		app.use('/admin/*', (req, res) => {
+		app.get('/', (req, res) => res.redirect(`./game/`));
+		app.get('/game', (req, res) => res.send(html));
+		app.use('/game', express.static(path.join(adminPath, '..')));
+		app.use('/game/*', (req, res) => {
 			res.send(html);
 		});
 	}

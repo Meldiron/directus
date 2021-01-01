@@ -86,7 +86,7 @@ export class UsersService extends ItemsService {
 
 			const payload = { email, scope: 'invite' };
 			const token = jwt.sign(payload, env.SECRET as string, { expiresIn: '7d' });
-			const acceptURL = env.PUBLIC_URL + '/admin/accept-invite?token=' + token;
+			const acceptURL = env.PUBLIC_URL + '/game/accept-invite?token=' + token;
 
 			await sendInviteMail(email, acceptURL);
 		}
@@ -122,7 +122,7 @@ export class UsersService extends ItemsService {
 		const payload = { email, scope: 'password-reset' };
 		const token = jwt.sign(payload, env.SECRET as string, { expiresIn: '1d' });
 
-		const acceptURL = url ? `${url}?token=${token}` : `${env.PUBLIC_URL}/admin/reset-password?token=${token}`;
+		const acceptURL = url ? `${url}?token=${token}` : `${env.PUBLIC_URL}/game/reset-password?token=${token}`;
 
 		await sendPasswordResetMail(email, acceptURL);
 	}

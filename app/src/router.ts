@@ -72,7 +72,7 @@ export const defaultRoutes: RouteConfig[] = [
 
 const router = new VueRouter({
 	mode: 'history',
-	base: getRootPath() + 'admin/',
+	base: getRootPath() + 'game/',
 	routes: defaultRoutes,
 });
 
@@ -80,7 +80,7 @@ export function replaceRoutes(routeFilter: (routes: RouteConfig[]) => RouteConfi
 	const newRoutes = routeFilter([...defaultRoutes]);
 	const newRouter = new VueRouter({
 		mode: 'history',
-		base: getRootPath() + 'admin/',
+		base: getRootPath() + 'game/',
 		routes: newRoutes,
 	});
 

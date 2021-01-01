@@ -5,7 +5,7 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 module.exports = {
 	lintOnSave: false,
-	publicPath: '/admin/',
+	publicPath: '/game/',
 
 	devServer: {
 		allowedHosts: ['localhost', '.gitpod.io'],
@@ -15,7 +15,7 @@ module.exports = {
 			'/': {
 				target: process.env.API_URL ? process.env.API_URL : 'http://localhost:8055/',
 				changeOrigin: true,
-				bypass: (req) => (req.url.startsWith('/admin') ? req.url : null),
+				bypass: (req) => (req.url.startsWith('/game') ? req.url : null),
 			},
 		},
 		progress: false,
