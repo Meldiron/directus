@@ -47,7 +47,7 @@ export async function setLanguage(lang: Language): Promise<boolean> {
 export default i18n;
 
 export function translateAPIError(error: RequestError | string) {
-	const defaultMsg = i18n.t('unexpected_error');
+	const defaultMsg = error;
 
 	let code = error;
 

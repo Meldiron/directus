@@ -84,13 +84,16 @@ export default defineComponent({
 				const res = await api.get('/custom/custom-auth/register-user?hash=' + emailStr);
 
 				if (res.data.ok != '1') {
-					error.value =
-						'Could not register a new account. This may mean problem on our side but most likely, you have already used this email. Please check your inbox, try to login, reset password or register an account for different email address.';
-				} else {
-					// Stores are hydrated after login
-					const lastPage = userStore.state.currentUser?.last_page;
-					router.push(lastPage || '/register-success');
+					throw Error(
+						'Could not register a new account. This may mean problem on our side but most likely, you have already used this email. Please check your inbox, try to login, reset password or register an account for different email address.'
+					);
 				}
+
+				// alert?
+
+				// Stores are hydrated after login
+				const lastPage = userStore.state.currentUser?.last_page;
+				router.push(lastPage || '/register-success');
 			} catch (err) {
 				if (err.response?.data?.errors?.[0]?.extensions?.code === 'INVALID_OTP' && requiresTFA.value === false) {
 					requiresTFA.value = true;
