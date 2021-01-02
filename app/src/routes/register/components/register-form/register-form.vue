@@ -14,7 +14,7 @@
 			<router-link to="/login" class="forgot-password">Already have account?</router-link>
 		</div>
 
-		<p style=" margin-top: 16px;margin-bottom: 16px; opacity: 0.5">
+		<p style="margin-top: 16px; margin-bottom: 16px; opacity: 0.5">
 			Once you click the register button, we will send you an e-mail. You will have to open this e-mail to finish
 			registration and set up your password.
 		</p>
@@ -81,7 +81,13 @@ export default defineComponent({
 
 				const emailStr = email.value;
 
-				await api.get('/custom/custom-auth/register-user?hash=' + emailStr);
+				const res = await api.get('/custom/custom-auth/register-user?hash=' + emailStr);
+
+				if (res.ok != '1') {
+					throw Error(
+						'Could not register a new account. This may mean problem on our side but most likely, you have already used this email. Please check your inbox, try to login, reset password or register an account for different email address.'
+					);
+				}
 
 				// alert?
 
