@@ -1,5 +1,7 @@
 import VueRouter, { NavigationGuard, RouteConfig, Route } from 'vue-router';
 import LoginRoute from '@/routes/login';
+import RegisterRoute from '@/routes/register';
+import RegisterSuccessRoute from '@/routes/register-success';
 import LogoutRoute from '@/routes/logout';
 import ResetPasswordRoute from '@/routes/reset-password';
 import AcceptInviteRoute from '@/routes/accept-invite';
@@ -19,6 +21,30 @@ export const defaultRoutes: RouteConfig[] = [
 		name: 'login',
 		path: '/login',
 		component: LoginRoute,
+		props: (route) => ({
+			ssoErrorCode: route.query.error ? route.query.code : null,
+			logoutReason: route.query.reason,
+		}),
+		meta: {
+			public: true,
+		},
+	},
+	{
+		name: 'register',
+		path: '/register',
+		component: RegisterRoute,
+		props: (route) => ({
+			ssoErrorCode: route.query.error ? route.query.code : null,
+			logoutReason: route.query.reason,
+		}),
+		meta: {
+			public: true,
+		},
+	},
+	{
+		name: 'register-success',
+		path: '/register-success',
+		component: RegisterSuccessRoute,
 		props: (route) => ({
 			ssoErrorCode: route.query.error ? route.query.code : null,
 			logoutReason: route.query.reason,

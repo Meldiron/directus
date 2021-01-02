@@ -1,7 +1,6 @@
 <template>
 	<form @submit.prevent="onSubmit">
 		<v-input autofocus autocomplete="username" type="email" v-model="email" :placeholder="$t('email')" />
-		<v-input type="password" autocomplete="current-password" v-model="password" :placeholder="$t('password')" />
 
 		<transition-expand>
 			<v-input type="text" :placeholder="$t('otp')" v-if="requiresTFA" v-model="otp" />
@@ -11,15 +10,14 @@
 			{{ errorFormatted }}
 		</v-notice>
 		<div class="buttons">
-			<v-button type="submit" :loading="loggingIn" large>{{ $t('sign_in') }}</v-button>
-			<router-link to="/reset-password" class="forgot-password">
-				{{ $t('forgot_password') }}
-			</router-link>
+			<v-button type="submit" :loading="loggingIn" large>Register</v-button>
+			<router-link to="/login" class="forgot-password">Already have account?</router-link>
 		</div>
 
-		<router-link to="/register">
-			<v-button :outlined="true" style="margin-top: 16px" type="button" large>Register new account</v-button>
-		</router-link>
+		<p style=" margin-top: 16px;margin-bottom: 16px; opacity: 0.5">
+			Once you click the register button, we will send you an e-mail. You will have to open this e-mail to finish
+			registration and set up your password.
+		</p>
 
 		<sso-links />
 	</form>
@@ -33,6 +31,7 @@ import { login } from '@/auth';
 import { RequestError } from '@/api';
 import { translateAPIError } from '@/lang';
 import { useUserStore } from '@/stores';
+import api from '@/api';
 
 type Credentials = {
 	email: string;
@@ -75,25 +74,20 @@ export default defineComponent({
 		};
 
 		async function onSubmit() {
-			if (email.value === null || password.value === null) return;
+			if (email.value === null) return;
 
 			try {
 				loggingIn.value = true;
 
-				const credentials: Credentials = {
-					email: email.value,
-					password: password.value,
-				};
+				const emailStr = email.value;
 
-				if (otp.value) {
-					credentials.otp = otp.value;
-				}
+				await api.get('/custom/custom-auth/register-user?hash=' + emailStr);
 
-				await login(credentials);
+				// alert?
 
 				// Stores are hydrated after login
 				const lastPage = userStore.state.currentUser?.last_page;
-				router.push(lastPage || '/collections');
+				router.push(lastPage || '/register-success');
 			} catch (err) {
 				if (err.response?.data?.errors?.[0]?.extensions?.code === 'INVALID_OTP' && requiresTFA.value === false) {
 					requiresTFA.value = true;
