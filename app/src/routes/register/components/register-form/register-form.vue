@@ -83,7 +83,7 @@ export default defineComponent({
 
 				const res = await api.get('/custom/custom-auth/register-user?hash=' + emailStr);
 
-				if (res.ok != '1') {
+				if (res.data.ok != '1') {
 					throw Error(
 						'Could not register a new account. This may mean problem on our side but most likely, you have already used this email. Please check your inbox, try to login, reset password or register an account for different email address.'
 					);
